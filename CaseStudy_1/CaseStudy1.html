@@ -1,0 +1,149 @@
+<!-- #######  THIS IS A COMMENT - Visible only in the source editor #########-->
+
+<style>
+	/* Applies to the entire body of the HTML document (except where overridden by more specific
+selectors). */
+body {
+  margin: 25px;
+  background-color: rgb(240,240,240);
+  font-family: arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Applies to all <h1>...</h1> elements. */
+h1 {
+  font-size: 35px;
+  font-weight: normal;
+  margin-top: 5px;
+}
+
+/* Applies to all elements with <... class="someclass"> specified. */
+.someclass { color: red; }
+
+/* Applies to the element with <... id="someid"> specified. */
+#someid { color: green; }
+
+
+</style>
+
+
+
+<h2>Case Study #1</h2>
+
+
+
+<p style="font-size: 1.5em;">The given dataset (CSV) has data containing synthetic transactions and some are marked as fraudulent. I have performed the queries required in case study 1 as follows:</p>
+
+<p style="font-size: 1.25em;"><strong>&bull; Describe the Dataset and any issues with it:</strong></p>
+
+<p><a style="font-size: 1.15em; color: blue;">
+Here, we can see there are 5 different types of transactions: 1) CASH_IN 2) CASH_OUT 3) DEBIT 4) TRANSFER 5) PAYMENT.
+<br>
+We have a column "newbalanceOrig" which can be obtained by "oldbalanceOrg - amount"
+There are 2 rows which have a difference in the newbalanceOrig by +0.01 than the expected value.
+There are 5 rows which have a difference in the newbalanceOrig by -0.01 than the expected value.
+<br>
+16 records has been flagged as fraud by the dataset.
+<br>
+For type: "Transfer", 
+<br>
+We get 297 records where Destination account had non-zero old balance and after the transfer, the balance observed is '0'.
+<br>
+We get 236 records for type transfer where Origin account did not have enough balance to be transferred to the destination account.
+<br>
+There are 318 rows where the destination balance is not updated in multiple rows while the money got deducted from the origin account. In such rows, Destination table shows amount as '0' even after a transfer transaction.
+<br>
+Out of 318 rows for transfer for which we had a non-zero new dest balance, 224 were wrongly calculated new destination balances after transfer and 94 were correctly calculated.
+</a></p>
+
+<p style="font-size: 1.25em;"><strong>&bull; Generate a minimum of 5 visualizations using the data and write a brief description of your
+observations. Additionally, all attempts should be made to make the visualizations visually
+appealing
+:</strong></p>
+
+<div id="piechart"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+// Draw the chart and set the chart values
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+  ['Type', 'Number of records'],
+  ['Cash_in', 227130],
+  ['Cash_out', 373641],
+  ['Debit', 7178],
+  ['Transfer', 86753],
+  ['Payment', 353873]
+]);
+
+  // Optional; add a title and set the width and height of the chart
+  var options = {'title':'Types of Transactions', 'width':550, 'height':400};
+
+  // Display the chart inside the <div> element with id="piechart"
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  chart.draw(data, options);
+}
+</script>
+
+<p><a style="font-size: 1.15em; color: blue;">Here, we can see the percentage of number of rows of the 5 different types of transactions.</a></p>
+
+
+<img src="transferType.png" alt="Transfer Type">
+
+<p style="font-size: 1.25em;"><strong>Since the given data is synthetic, we are observing fraudelent transactions in two types of transactions: 1) Cash_out 2) Transfer. Here, we can see there are almost equal number of fraud transactions in both.</strong></p>
+
+
+<img src="amountDistribution1.png" alt="Transfer Type">
+
+<p style="font-size: 1.25em;"><strong>We can see that the distribution of amount over count is a long-tail curve. Here, we get very low count of transactions for high amount such as 1 million. </strong></p>
+
+
+
+<img src="amountDistribution2.png" alt="Transfer Type">
+<p style="font-size: 1.25em;"><strong>We can see that the distribution of amount over count is a long-tail curve. Here, we get very low count of transactions for high amount such as 100,000 and it proves that this is valid dataset and the distribution makes sense just like real-life records.</strong></p>
+
+
+<img src="corelation.png" alt="Transfer Type">
+<p style="font-size: 1.25em;"><a style="font-size: 1.15em; color: blue;">Above image shows the correlation between multiple fields of the given data. Here the shade of the blocks define the corelation. Light color corresponds to higher correlation and dark shade corresponds to low correlation. For example, we can see a block of light shade between oldbalanceDest and newbalanceDest which proves they are highly correlated. While on the other hand, isFlaggedFraud and isFraud are not highly correlated as we have observed multiple wrong predictions above.</a></p>
+
+<p style="font-size: 1.25em;"><strong>&bull; Create a feature set and perform prediction of fraudulent transactions using at least 2 algorithms. Describe any data cleansing that must be performed.:</strong></p>
+
+
+
+<p><a style="font-size: 1.15em; color: blue;">
+	Training and testing split is 70:30. It is split in a way that fradulent transaction ratio remains the same in both the sets. In the 70% of the training data, we further downsample it to 5% - 20% of total training data depending upon what algorithm we use, to save time. However, in doing so, we preserve all the fradulent transactions as the data is highly imbalanced.
+	<br>
+	For training, we ignore the columns: "isFraudFlagged" because it might be the prediction column. We also ignore "nameOrig" and "nameDest" as they are not useful for prediction since we assume no account is fraudelent.
+	<br>
+	We encode column "type" with one-hot encoding for algorithms like XGBoost. 
+
+</a></p>
+
+<p style="font-size: 1.25em;"><strong>&bull; Visualize the test results and propose what could be done to improve results. Also, describe the assumptions you made and your approach.
+:</strong></p>
+
+<p><a style="font-size: 1.15em; color: blue;">
+	If we use accuracy metric, we get accuracy as high as 99.96%. However, this metric is flawed if we predict all transactions as not fraudelent, we would get accuracy score of 99.87% which is equally high but misleadinig. Therefore, we compare results based on confusion matrix and Area Under Curve (AUC) scores.
+</a></p>
+
+<p><a style="font-size: 1.15em; color: blue;">
+	RESULT:
+	<br>
+	<strong>Decision Tree</strong>
+	Decision Tree is one of the simpler classifiers which trains very fast. We downsample training data to around 1 Million rows (~20% of original data).
+	It is able to predict correctly 1.6M test rows as non-fraudulent and 1903 as correctly fraudulent. However, it predicts 846 rows as non-fraudlent which are actually fraudulent and wrongly labels 150 good transactions as fraud.
+	<br>
+	<strong>XGBoost</strong>
+	XGBoost is widely used classifier which uses ensemble learning. We downsample training data to around 2 Million rows (~40% of original data).
+	It is able to predict correctly 1.6M test rows as non-fraudulent and 1785 as correctly fraudulent. However, it predicts 257 rows as non-fraudlent which are actually fraudulent and wrongly labels 268 good transactions as fraud.
+
+</a></p>
+
+
+
+<p style="font-size: 1.5em;">Thank you for your time and consideration!</p>
