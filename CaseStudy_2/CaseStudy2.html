@@ -1,5 +1,36 @@
 <!-- #######  THIS IS A COMMENT - Visible only in the source editor #########-->
 <h2>Case Study #2</h2>
+
+
+<style>
+	
+/* Applies to the entire body of the HTML document (except where overridden by more specific
+selectors). */
+body {
+  margin: 25px;
+  background-color: rgb(240,240,240);
+  font-family: arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Applies to all <h1>...</h1> elements. */
+h1 {
+  font-size: 35px;
+  font-weight: normal;
+  margin-top: 5px;
+}
+
+/* Applies to all elements with <... class="someclass"> specified. */
+.someclass { color: red; }
+
+/* Applies to the element with <... id="someid"> specified. */
+#someid { color: green; }
+
+</style>
+
+
+
+
 <p style="font-size: 1.5em;">The given dataset (CSV) has data for 3 years worth of customer orders. Here, queries are needed to be calculated for the current year, however, there are no entries for the current year 2021 and that is why I am considering a current year to be equal to <strong>2017</strong>.</p>
 <p style="font-size: 1.5em;"><mark>All the calculations are done considering 2017 to be the current year.</mark></p>
 
@@ -29,13 +60,13 @@
 
 <p style="font-size: 1.25em;"><strong> Here, I am calculating new customers as the customers who were not present in the immediate previous year. Thus, customers present in year 2017 and not in 2016 are considered as "New" for year 2017. Similarly, customers present in year 2016 and not in 2015 are considered to be "New" for year 2016</strong></p>
 
-<p style="font-size: 1.25em;"><strong>•	Count of New Customers for year 2017 are <a style="font-size: 1.15em; color: blue;"> 229028</a> and you can find the details </strong><a href="https://github.com/pradyj77/stout_challenge/CaseStudy_2/new_customers.csv"> here.</a></p>
-<p style="font-size: 1.25em;"><strong>•	Count of New Customers for year 2016 are  <a style="font-size: 1.15em; color: blue;"> 145062</a>  and you can find the details</strong><a href="https://github.com/pradyj77/stout_challenge/CaseStudy_2/new_customers.csv"> here.</a></p>
+<p style="font-size: 1.25em;"><strong>•	Count of New Customers for year 2017 are <a style="font-size: 1.15em; color: blue;"> 229028</a> and you can find the details </strong><a href="https://raw.githubusercontent.com/pradyj77/stout_challenge/main/CaseStudy_2/new_customers.csv"> here</a> with the year 2017.</p>
+<p style="font-size: 1.25em;"><strong>•	Count of New Customers for year 2016 are  <a style="font-size: 1.15em; color: blue;"> 145062</a>  and you can find the details</strong><a href="https://raw.githubusercontent.com/pradyj77/stout_challenge/main/CaseStudy_2/new_customers.csv"> here</a> with the year 2016.</p>
 
 <p style="font-size: 1.25em;"><strong> Here, I am calculating lost customers as the customers who were present in the immediate previous year but are not present in the current year. Thus, customers present in year 2016 and not in 2017 are considered as "Lost" for year 2017. Similarly, customers present in year 2015 and not in 2016 are considered to be "Lost" for year 2016</strong></p>
 
-<p style="font-size: 1.25em;"><strong>•	Count of Lost Customers for year 2017 are <a style="font-size: 1.15em; color: blue;"> 183687</a> and you can find the details</strong><a href="https://github.com/pradyj77/stout_challenge/CaseStudy_2/lost_customers.csv"> here.</a></p>
-<p style="font-size: 1.25em;"><strong>•	Count of Lost Customers for year 2016 are <a style="font-size: 1.15em; color: blue;"> 171710</a> and you can find the details</strong><a href="https://github.com/pradyj77/stout_challenge/CaseStudy_2/lost_customers.csv"> here.</a></p>
+<p style="font-size: 1.25em;"><strong>•	Count of Lost Customers for year 2017 are <a style="font-size: 1.15em; color: blue;"> 183687</a> and you can find the details</strong><a href="https://raw.githubusercontent.com/pradyj77/stout_challenge/main/CaseStudy_2/lost_customers.csv"> here</a> with the year 2017.</p>
+<p style="font-size: 1.25em;"><strong>•	Count of Lost Customers for year 2016 are <a style="font-size: 1.15em; color: blue;"> 171710</a> and you can find the details</strong><a href="https://raw.githubusercontent.com/pradyj77/stout_challenge/main/CaseStudy_2/lost_customers.csv"> here</a> with the year 2016.</p>
 
 
 <p style="font-size: 1.5em;">Thank you for your time and consideration!</p>
