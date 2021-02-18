@@ -56,6 +56,18 @@ There are 318 rows where the destination balance is not updated in multiple rows
 Out of 318 rows for transfer for which we had a non-zero new dest balance, 224 were wrongly calculated new destination balances after transfer and 94 were correctly calculated.
 </a></p>
 
+<p><a style="font-size: 1.15em; color: black;">
+  <strong>ISSUES:</strong></a>
+  <br>
+  <a style="font-size: 1.15em; color: blue;">
+  Ideally the transaction amount for destination account in case of transfer should be original destination amount plus the amount in the transaction which is not true for all the cases.
+  <br>
+  There are rows where the amount to be transferred is more than original amount in the source account.
+  <br>
+  These errors can be termed as transactional errors. I did not try to fix these due to time constraints but doing so might help classification accuracy. 
+</a></p>
+
+
 <p style="font-size: 1.25em;"><strong>&bull; Generate a minimum of 5 visualizations using the data and write a brief description of your
 observations. Additionally, all attempts should be made to make the visualizations visually
 appealing
@@ -132,18 +144,32 @@ function drawChart() {
 </a></p>
 
 <p><a style="font-size: 1.15em; color: blue;">
-	RESULT:
+	<strong>RESULTS:</strong></a></p>
+  <img src="results.png" alt="Result Image">
 	<br>
+<p><a style="font-size: 1.15em; color: blue;">
 	<strong>Decision Tree</strong>
 	Decision Tree is one of the simpler classifiers which trains very fast. We downsample training data to around 1 Million rows (~20% of original data).
-	It is able to predict correctly 1.6M test rows as non-fraudulent and 1903 as correctly fraudulent. However, it predicts 846 rows as non-fraudlent which are actually fraudulent and wrongly labels 150 good transactions as fraud.
+	It is able to predict correctly 1.6M test rows as non-fraudulent and 1903 as correctly fraudulent. However, it predicts 150 rows as non-fraudlent which are actually fraudulent and wrongly labels 846 good transactions as fraud. AUC score is 96.32%. 
 	<br>
 	<strong>XGBoost</strong>
 	XGBoost is widely used classifier which uses ensemble learning. We downsample training data to around 2 Million rows (~40% of original data).
-	It is able to predict correctly 1.6M test rows as non-fraudulent and 1785 as correctly fraudulent. However, it predicts 257 rows as non-fraudlent which are actually fraudulent and wrongly labels 268 good transactions as fraud.
-
+	It is able to predict correctly 1.6M test rows as non-fraudulent and 1785 as correctly fraudulent. However, it predicts 268 rows as non-fraudlent which are actually fraudulent and wrongly labels 257 good transactions as fraud. AUC score is 93.46%.
+  <br>
+  <strong>Logistic Regression</strong>
+  Logistic Regression is used for as classifier which uses probabilistic computation of the class to which the datapoint has higher probability of belonging based on the correlation with other parameters in the dataset. We get 6529 False Negatives and 868 false positives. AUC score is 78.65%.
 </a></p>
 
+<img src="ConfusionMatrix.png" alt="Result Image">
+<p><a style="font-size: 1.15em; color: blue;">
+  I have not plotted confusion matrix as class data is highly imbalanced. 
+</a></p>
+
+<p><a style="font-size: 1.15em; color: black;">
+  <strong>IMPROVEMENTS</strong></a>
+  <a style="font-size: 1.15em; color: blue;">
+  Additional feature Engineering such as adding columns for transactional errors maybe useful in increasing classification scores. I have not explored hyperparameter tuning which will also impact the scores. 
+</a></p>
 
 
 <p style="font-size: 1.5em;">Thank you for your time and consideration!</p>
